@@ -9,25 +9,25 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created on 19.03.2022.
+ * Created on 20.03.2022.
  *
  * @author Denis Matytsin
  */
 @Component
-public class HelpCommandHandler extends CommandHandler {
+public class OptionsCommandHandler extends CommandHandler {
 
     @Override
     public String getCommand() {
-        return "/help";
+        return "/options";
     }
 
     @Override
     public List<SendMessage> getMessage(Long chatId, Update update) {
-        SendMessage sendMessage = SendMessage.builder()
-                                             .chatId(chatId.toString())
-                                             .parseMode("markdown")
-                                             .text("*Бот DEHucku*\n" + "Чтобы начать, введите /start.")
-                                             .build();
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId.toString());
+        sendMessage.enableMarkdown(true);
+        sendMessage.setText("**Опции**\n" +
+                            "Скоро будут :)");
         return Collections.singletonList(sendMessage);
     }
 }

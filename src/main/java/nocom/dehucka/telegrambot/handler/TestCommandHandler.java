@@ -9,24 +9,33 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created on 19.03.2022.
+ * Created on 20.03.2022.
  *
  * @author Denis Matytsin
  */
 @Component
-public class StartCommandHandler extends CommandHandler {
+public class TestCommandHandler extends CommandHandler {
 
     @Override
     public String getCommand() {
-        return "/start";
+        return "/test";
+    }
+
+    @Override
+    public List<SendMessage> getIntroMessage(Long chatId, Update update) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId.toString());
+        sendMessage.enableMarkdown(true);
+        sendMessage.setText("test intro");
+        return Collections.singletonList(sendMessage);
     }
 
     @Override
     public List<SendMessage> getMessage(Long chatId, Update update) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId.toString());
-        sendMessage.enableMarkdown(true);
-        sendMessage.setText("Здесь что-то будет немного позже :/");
+        sendMessage.setParseMode("markdown");
+        sendMessage.setText("**TEST** MESSAGE \"" + update.getMessage().getText() + "\"");
         return Collections.singletonList(sendMessage);
     }
 }
