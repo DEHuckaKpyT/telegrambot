@@ -7,11 +7,13 @@ import nocom.dehucka.telegrambot.zbot.command.manager.handler.CommandHandlerMana
 import nocom.dehucka.telegrambot.zbot.exception.CustomException;
 import nocom.dehucka.telegrambot.zbot.service.telergammessage.TelegramMessageService;
 import nocom.dehucka.telegrambot.zbot.service.telergammessage.argument.CreateTelegramMessageArgument;
+import nocom.dehucka.telegrambot.zbot.util.SerializingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -56,6 +58,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+
+        if (update.hasCallbackQuery()) runCommand(update);
 
         if (!update.hasMessage()) return;
 
@@ -103,6 +107,25 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private void runCommand(Long chatId, String command, Update update) {
+        messageService.create(CreateTelegramMessageArgument.builder()
+                                                           .chatId(chatId)
+                                                           .command(command)
+                                                           .build());
+
+        List<SendMessage> messages = commandHandlerManager.getMessage(chatId, command, update);
+        messages.forEach(this::send);
+
+        String nextCommand = commandChainManager.getNextCommand(chatId);
+        List<SendMessage> introMessages = commandHandlerManager.getIntroMessage(chatId, nextCommand, update);
+        introMessages.forEach(this::send);
+    }
+
+    private void runCommand(Update update) {
+        Long chatId = update.getCallbackQuery().getMessage().getChatId();
+
+        String[] strings = SerializingUtils.deserializeCallbackData(update.getCallbackQuery().getData());
+        String command = "/" + strings[0];
+
         messageService.create(CreateTelegramMessageArgument.builder()
                                                            .chatId(chatId)
                                                            .command(command)

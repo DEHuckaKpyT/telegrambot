@@ -3,7 +3,7 @@ package nocom.dehucka.telegrambot.zbot.command.manager.chain;
 import com.fasterxml.jackson.core.type.TypeReference;
 import nocom.dehucka.telegrambot.zbot.model.TelegramMessage;
 import nocom.dehucka.telegrambot.zbot.service.telergammessage.TelegramMessageService;
-import nocom.dehucka.telegrambot.zbot.util.ParseUtils;
+import nocom.dehucka.telegrambot.zbot.util.SerializingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class CommandChainManagerImpl implements CommandChainManager {
     @Autowired
     public CommandChainManagerImpl(TelegramMessageService messageService) throws IOException {
         this.messageService = messageService;
-        this.commandChains = ParseUtils.parseJson("chain.json", new TypeReference<Map<String, String>>() {});
+        this.commandChains = SerializingUtils.deserializeJson("chain.json", new TypeReference<Map<String, String>>() {});
     }
 
     @Override
