@@ -26,8 +26,9 @@ public class HelpCommandHandler extends CommandHandler {
         SendMessage sendMessage = SendMessage.builder()
                                              .chatId(chatId.toString())
                                              .parseMode("markdown")
-                                             .text("*Бот DEHucku*\n" + "Чтобы начать, введите /start.")
+                                             .text("*Бот DEHucku*\n" + "Чтобы посмотреть возможности, введите /options")
                                              .build();
+
         return Collections.singletonList(sendMessage);
     }
 }

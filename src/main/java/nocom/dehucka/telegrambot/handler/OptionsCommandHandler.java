@@ -31,8 +31,7 @@ public class OptionsCommandHandler extends CommandHandler {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId.toString());
         sendMessage.enableMarkdown(true);
-        sendMessage.setText("**Опции**\n" +
-                            "Скоро будут :)");
+        sendMessage.setText("*Опции*");
         sendMessage.setReplyMarkup(getKeyboard());
         return Collections.singletonList(sendMessage);
     }
@@ -40,9 +39,9 @@ public class OptionsCommandHandler extends CommandHandler {
     private ReplyKeyboard getKeyboard(){
         InlineKeyboardButton button = new InlineKeyboardButton();
 
-        String callbackData = SerializingUtils.serializeCallbackData("/help");
+        String callbackData = SerializingUtils.serializeCallbackData("/joke");
 
-        button.setText("test");
+        button.setText("Получить шуточку");
         button.setCallbackData(callbackData);
         return new InlineKeyboardMarkup(Collections.singletonList(Collections.singletonList(button)));
     }

@@ -124,7 +124,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         Long chatId = update.getCallbackQuery().getMessage().getChatId();
 
         String[] strings = SerializingUtils.deserializeCallbackData(update.getCallbackQuery().getData());
-        String command = "/" + strings[0];
+        String command = strings[0];
 
         messageService.create(CreateTelegramMessageArgument.builder()
                                                            .chatId(chatId)
