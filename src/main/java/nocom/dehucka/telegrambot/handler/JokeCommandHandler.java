@@ -1,5 +1,7 @@
 package nocom.dehucka.telegrambot.handler;
 
+import lombok.RequiredArgsConstructor;
+import nocom.dehucka.telegrambot.action.GetJokeAction;
 import nocom.dehucka.telegrambot.zbot.command.handler.CommandHandler;
 import nocom.dehucka.telegrambot.zbot.exception.CustomException;
 import org.springframework.http.HttpStatus;
@@ -18,9 +20,10 @@ import java.util.List;
  * @author Matytsin Denis Olegovich
  */
 @Component
+@RequiredArgsConstructor
 public class JokeCommandHandler extends CommandHandler {
 
-    RestTemplate restTemplate = new RestTemplate();
+    private final GetJokeAction getJokeAction;
 
     @Override
     public String getCommand() {
@@ -29,15 +32,11 @@ public class JokeCommandHandler extends CommandHandler {
 
     @Override
     public List<SendMessage> getMessage(Long chatId, Update update) {
-        String fooResourceUrl = "http://rzhunemogu.ru/Rand.aspx?CType=1";
-        ResponseEntity<String> response = restTemplate.getForEntity(fooResourceUrl, String.class);
-        if (response.getStatusCode() != HttpStatus.OK) throw new CustomException("Шутки, кажется, пока не работают :(");
-
-        String body = response.getBody();
+        String joke = getJokeAction.getJoke();
 
         return Collections.singletonList(SendMessage.builder()
                                                      .chatId(chatId.toString())
-                                                     .text(body.substring(53, body.length() - 17))
+                                                     .text(joke)
                                                      .build());
     }
 }
