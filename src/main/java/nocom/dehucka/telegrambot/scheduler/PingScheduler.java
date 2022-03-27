@@ -22,8 +22,9 @@ public class PingScheduler {
     public void pingSelf() {
         try {
             String string = restTemplate.getForObject("https://dehucka-kpyt.herokuapp.com/actuator", String.class);
+            log.info("Ping was executed");
         } catch (Exception ex) {
-            log.error(ex.getMessage());
+            log.error("Error while ping self\n" + ex.getMessage());
         }
     }
 }
