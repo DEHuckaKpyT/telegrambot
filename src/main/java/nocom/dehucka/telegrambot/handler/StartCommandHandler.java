@@ -35,7 +35,7 @@ public class StartCommandHandler extends CommandHandler {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId.toString());
         sendMessage.enableMarkdown(true);
-        sendMessage.setText("Здесь что-то будет немного позже :/");
+        sendMessage.setText("*Бот DEHucku*");
         return Collections.singletonList(sendMessage);
     }
 }

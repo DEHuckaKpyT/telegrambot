@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -28,11 +29,19 @@ public class CommandHandlerManagerImpl implements CommandHandlerManager {
 
     @Override
     public List<SendMessage> getMessage(Long chatId, String command, Update update) {
-        return handlersByCommand.getOrDefault(command, handlersByCommand.get("/help")).getMessage(chatId, update);
+        CommandHandler commandHandler = handlersByCommand.get(command);
+
+        return commandHandler == null
+               ? Collections.emptyList()
+               : commandHandler.getMessage(chatId, update);
     }
 
     @Override
     public List<SendMessage> getIntroMessage(Long chatId, String command, Update update) {
-        return handlersByCommand.getOrDefault(command, handlersByCommand.get("/help")).getIntroMessage(chatId, update);
+        CommandHandler commandHandler = handlersByCommand.get(command);
+
+        return commandHandler == null
+               ? Collections.emptyList()
+               : commandHandler.getIntroMessage(chatId, update);
     }
 }

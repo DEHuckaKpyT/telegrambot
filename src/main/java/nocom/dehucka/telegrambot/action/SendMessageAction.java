@@ -17,7 +17,14 @@ public class SendMessageAction {
 
     private final TelegramBot telegramBot;
 
-    public void sendAllByChatId(Set<Long> chatIds, String text) {
-        chatIds.forEach(chatId -> telegramBot.send(chatId, text));
+    public void sendAllByChatId(Set<Long> chatIds, String messageText) {
+        chatIds.forEach(chatId -> telegramBot.send(chatId, messageText));
+    }
+
+    public void sendAllByChatId(Set<Long> chatIds, String messageText1, String messageText2) {
+        chatIds.forEach(chatId -> {
+            telegramBot.send(chatId, messageText1);
+            telegramBot.send(chatId, messageText2);
+        });
     }
 }

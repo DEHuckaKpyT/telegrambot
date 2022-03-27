@@ -1,6 +1,7 @@
 package nocom.dehucka.telegrambot.zbot.command.manager.chain;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import lombok.extern.slf4j.Slf4j;
 import nocom.dehucka.telegrambot.zbot.model.TelegramMessage;
 import nocom.dehucka.telegrambot.zbot.service.telergammessage.TelegramMessageService;
 import nocom.dehucka.telegrambot.zbot.util.SerializingUtils;
@@ -15,6 +16,7 @@ import java.util.Map;
  *
  * @author Denis Matytsin
  */
+@Slf4j
 @Component
 public class CommandChainManagerImpl implements CommandChainManager {
 
@@ -29,7 +31,7 @@ public class CommandChainManagerImpl implements CommandChainManager {
 
     @Override
     public String getNextCommand(String command) {
-        return commandChains.getOrDefault(command, "/help");
+        return commandChains.get(command);
     }
 
     @Override
@@ -41,6 +43,10 @@ public class CommandChainManagerImpl implements CommandChainManager {
     public String getPreviousCommand(Long chatId) {
         return messageService.getLastMessageWithCommand(chatId)
                              .map(TelegramMessage::getCommand)
-                             .orElse("/help");
+                             .orElseGet(() -> {
+                                 log.warn("Chat with id = " + chatId.toString() + " has no last command");
+
+                                 return null;
+                             });
     }
 }
