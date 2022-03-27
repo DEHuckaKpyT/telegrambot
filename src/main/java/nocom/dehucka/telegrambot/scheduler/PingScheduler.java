@@ -1,6 +1,7 @@
 package nocom.dehucka.telegrambot.scheduler;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -10,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author Denis Matytsin
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class PingScheduler {
@@ -18,6 +20,10 @@ public class PingScheduler {
 
     @Scheduled(fixedRate = 29000)
     public void pingSelf() {
-        String string = restTemplate.getForObject("https://dehucka-kpyt.herokuapp.com/actuator", String.class);
+        try {
+            String string = restTemplate.getForObject("https://dehucka-kpyt.herokuapp.com/actuator", String.class);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+        }
     }
 }
