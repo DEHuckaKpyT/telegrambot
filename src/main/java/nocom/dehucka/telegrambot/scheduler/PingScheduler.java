@@ -18,6 +18,6 @@ public class PingScheduler {
 
     @Scheduled(fixedRate = 29000)
     public void pingSelf() {
-//        String string = restTemplate.getForObject("https://dehucka-kpyt.herokuapp.com/actuator", String.class);
+        String string = restTemplate.getForObject("https://dehucka-kpyt.herokuapp.com/actuator", String.class);
     }
 }
