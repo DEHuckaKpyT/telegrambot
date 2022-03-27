@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>nocom.dehucka</groupId>
-    <artifactId>telegrambot</artifactId>
+    <artifactId>telegram-bot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>telegrambot</name>
+    <name>telegram-bot</name>
     <description>DEHucka`s telegram bot</description>
     <properties>
         <java.version>17</java.version>
