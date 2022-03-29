@@ -5,6 +5,7 @@ import nocom.dehucka.telegrambot.service.user.TelegramUserService;
 import nocom.dehucka.telegrambot.service.user.argument.CreateTelegramUserArgument;
 import nocom.dehucka.telegrambot.zbot.command.handler.CommandHandler;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -28,7 +29,7 @@ public class StartCommandHandler extends CommandHandler {
     }
 
     @Override
-    public List<SendMessage> getMessage(Long chatId, Update update) {
+    public List<PartialBotApiMethod> getMessage(Long chatId, Update update) {
         userService.createIfNotExists(CreateTelegramUserArgument.builder()
                                                                 .chatId(chatId)
                                                                 .build());

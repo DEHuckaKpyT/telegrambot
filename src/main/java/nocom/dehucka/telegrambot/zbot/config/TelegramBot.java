@@ -12,11 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -95,9 +101,13 @@ public class TelegramBot extends TelegramLongPollingBot {
         return send(sendMessage);
     }
 
-    public Message send(SendMessage sendMessage) {
+    public Message send(PartialBotApiMethod method) {
         try {
-            return execute(sendMessage);
+            if (method instanceof EditMessageReplyMarkup) {
+                execute((EditMessageReplyMarkup) method);
+            }else if (method instanceof SendMessage) {
+                execute((SendMessage) method);
+            }
         } catch (TelegramApiException telegramApiException) {
             log.error(telegramApiException.getMessage());
         }
@@ -111,11 +121,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                                                            .command(command)
                                                            .build());
 
-        List<SendMessage> messages = commandHandlerManager.getMessage(chatId, command, update);
+        List<PartialBotApiMethod> messages = commandHandlerManager.getMessage(chatId, command, update);
         messages.forEach(this::send);
 
         String nextCommand = commandChainManager.getNextCommand(chatId);
-        List<SendMessage> introMessages = commandHandlerManager.getIntroMessage(chatId, nextCommand, update);
+        List<PartialBotApiMethod> introMessages = commandHandlerManager.getIntroMessage(chatId, nextCommand, update);
         introMessages.forEach(this::send);
     }
 
@@ -130,11 +140,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                                                            .command(command)
                                                            .build());
 
-        List<SendMessage> messages = commandHandlerManager.getMessage(chatId, command, update);
+        List<PartialBotApiMethod> messages = commandHandlerManager.getMessage(chatId, command, update);
         messages.forEach(this::send);
 
         String nextCommand = commandChainManager.getNextCommand(chatId);
-        List<SendMessage> introMessages = commandHandlerManager.getIntroMessage(chatId, nextCommand, update);
+        List<PartialBotApiMethod> introMessages = commandHandlerManager.getIntroMessage(chatId, nextCommand, update);
         introMessages.forEach(this::send);
     }
 
@@ -145,7 +155,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                                                            .build());
 
         String nextCommand = commandChainManager.getNextCommand(chatId);
-        List<SendMessage> messages = commandHandlerManager.getMessage(chatId, nextCommand, update);
+        List<PartialBotApiMethod> messages = commandHandlerManager.getMessage(chatId, nextCommand, update);
         messages.forEach(this::send);
     }
 }

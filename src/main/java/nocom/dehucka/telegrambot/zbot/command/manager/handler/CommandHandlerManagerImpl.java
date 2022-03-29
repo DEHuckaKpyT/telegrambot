@@ -3,6 +3,7 @@ package nocom.dehucka.telegrambot.zbot.command.manager.handler;
 import nocom.dehucka.telegrambot.zbot.command.handler.CommandHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -28,7 +29,7 @@ public class CommandHandlerManagerImpl implements CommandHandlerManager {
     }
 
     @Override
-    public List<SendMessage> getMessage(Long chatId, String command, Update update) {
+    public List<PartialBotApiMethod> getMessage(Long chatId, String command, Update update) {
         CommandHandler commandHandler = handlersByCommand.get(command);
 
         return commandHandler == null
@@ -37,7 +38,7 @@ public class CommandHandlerManagerImpl implements CommandHandlerManager {
     }
 
     @Override
-    public List<SendMessage> getIntroMessage(Long chatId, String command, Update update) {
+    public List<PartialBotApiMethod> getIntroMessage(Long chatId, String command, Update update) {
         CommandHandler commandHandler = handlersByCommand.get(command);
 
         return commandHandler == null

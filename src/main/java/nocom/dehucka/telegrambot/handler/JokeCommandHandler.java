@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -31,7 +32,7 @@ public class JokeCommandHandler extends CommandHandler {
     }
 
     @Override
-    public List<SendMessage> getMessage(Long chatId, Update update) {
+    public List<PartialBotApiMethod> getMessage(Long chatId, Update update) {
         String joke = getJokeAction.getJoke();
 
         return Collections.singletonList(SendMessage.builder()
