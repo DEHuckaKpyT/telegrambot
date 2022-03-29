@@ -77,9 +77,9 @@ public class CalendarCommandHandler extends CommandHandler {
                                                                      getMonthKeyboard());
             AnswerCallbackQuery answer = AnswerCallbackQuery.builder()
                                                             .callbackQueryId(callbackQuery.getId())
-                                                            .text("test")
-                                                            .showAlert(true)
-                                                            .cacheTime(5)
+                                                            .text("Отобразить только что выбранное время")
+                                                            .showAlert(false)
+                                                            .cacheTime(7)
                                                             .build();
 
             return Lists.newArrayList(edit, answer);
