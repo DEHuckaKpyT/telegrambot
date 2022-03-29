@@ -34,9 +34,9 @@ public class SerializingUtils {
     }
 
     public static String serializeCallbackData(String command, String... strings) {
-        return command.substring(1).concat(Joiner.on('♥')
-                                    .skipNulls()
-                                    .join(strings));
+        return command.substring(1).concat("♥").concat(Joiner.on('♥')
+                                                             .skipNulls()
+                                                             .join(strings));
     }
 
     public static String[] deserializeCallbackData(String data) {
